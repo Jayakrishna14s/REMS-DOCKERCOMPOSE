@@ -1,0 +1,38 @@
+services:
+  nginx:
+    image: nginx:stable-perl
+    container_name: nginx
+    ports:
+      - "80:80"
+
+
+  tomcat:
+    image: tomcat:8.5.69-jdk8-openjdk
+    container_name: tomcat
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    ports:
+      - "${MYSQL_PORT}:3306"
+    hostname: ${MYSQL_HOST}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE} 
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/data:/var/lib/mysql
