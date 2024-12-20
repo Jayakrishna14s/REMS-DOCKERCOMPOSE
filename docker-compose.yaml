@@ -1,11 +1,4 @@
 services:
-  nginx:
-    image: nginx:stable-perl
-    container_name: nginx
-    ports:
-      - "80:80"
-
-
   tomcat:
     image: tomcat:8.5.69-jdk8-openjdk
     container_name: tomcat
