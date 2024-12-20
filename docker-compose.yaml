@@ -14,6 +14,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - ./ROOT.war:/usr/local/tomcat/webapps/ROOT.war
+    restart: always
 
   db:
     image: mysql:8.0
@@ -29,3 +30,4 @@ services:
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database/data:/var/lib/mysql
+    restart: always
